@@ -6,3 +6,6 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1", features = ["full"] }
 warp = "0.3"
+sea-orm = { version = "1.0.0-rc.5", features = [ "sqlx-postgres", "runtime-tokio-rustls", "macros" ] }
+entity = { path = "../entity" }
+migration = { path = "../migration" }

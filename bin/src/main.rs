@@ -1,7 +1,12 @@
+mod db;
+
+use migration::{cli, Migrator, MigratorTrait};
 use warp::Filter;
 
 #[tokio::main]
 async fn main() {
+    cli::run_cli(Migrator).await;
+
     // GET /hello/warp => 200 OK with body "Hello, warp!"
     let hello = warp::path!("hello" / String)
         .map(|name| format!("Hello, {}!", name));
