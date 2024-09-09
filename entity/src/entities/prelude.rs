@@ -3,4 +3,6 @@
 pub use super::blog::Entity as Blog;
 pub use super::category::Entity as Category;
 pub use super::image::Entity as Image;
+pub use super::jwt_secret::Entity as JwtSecret;
+pub use super::session_storage::Entity as SessionStorage;
 pub use super::user::Entity as User;

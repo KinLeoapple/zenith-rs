@@ -1,15 +1,14 @@
 use sea_orm_migration::{prelude::*, schema::*};
+use crate::user::User;
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
 
 #[derive(DeriveIden)]
-pub enum User {
+pub enum JWTSecret {
     Table,
     UserId,
-    UserDescription,
-    UserName,
-    UserPassword,
+    UserSecret,
 }
 
 #[async_trait::async_trait]
@@ -18,23 +17,26 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(User::Table)
+                    .table(JWTSecret::Table)
                     .if_not_exists()
-                    .col(ColumnDef::new(User::UserId)
+                    .col(ColumnDef::new(JWTSecret::UserId)
                         .big_integer()
                         .not_null()
                         .primary_key()
                     )
-                    .col(ColumnDef::new(User::UserDescription).string().not_null())
-                    .col(ColumnDef::new(User::UserName).string().not_null())
-                    .col(ColumnDef::new(User::UserPassword).string().not_null())
+                    .col(ColumnDef::new(JWTSecret::UserSecret).string().not_null())
+                    .foreign_key(
+                        ForeignKey::create()
+                            .from(JWTSecret::Table, JWTSecret::UserId)
+                            .to(User::Table, User::UserId)
+                    )
                     .to_owned(),
             ).await
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(User::Table).to_owned())
+            .drop_table(Table::drop().table(JWTSecret::Table).to_owned())
             .await
     }
 }

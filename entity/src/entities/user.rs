@@ -9,18 +9,26 @@ pub struct Model {
     pub user_id: i64,
     pub user_description: String,
     pub user_name: String,
-    pub user_password: DateTime,
+    pub user_password: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(has_many = "super::blog::Entity")]
     Blog,
+    #[sea_orm(has_many = "super::jwt_secret::Entity")]
+    JwtSecret,
 }
 
 impl Related<super::blog::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Blog.def()
+    }
+}
+
+impl Related<super::jwt_secret::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::JwtSecret.def()
     }
 }
 

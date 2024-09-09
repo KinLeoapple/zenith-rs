@@ -9,3 +9,11 @@ warp = "0.3"
 sea-orm = { version = "1.0.0-rc.5", features = [ "sqlx-postgres", "runtime-tokio-rustls", "macros" ] }
 entity = { path = "../entity" }
 migration = { path = "../migration" }
+jsonwebtoken = "9.3.0"
+serde = {version = "1.0", features = ["derive"] }
+chrono = "0.4.38"
+rand = "0.8.5"
+md5 = "0.7.0"
+rsa = "0.9.6"
+idgenerator = "2.0.0"
+serde_json = "1.0"

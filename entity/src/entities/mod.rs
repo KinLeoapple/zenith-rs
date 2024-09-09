@@ -5,4 +5,6 @@ pub mod prelude;
 pub mod blog;
 pub mod category;
 pub mod image;
+pub mod jwt_secret;
+pub mod session_storage;
 pub mod user;
