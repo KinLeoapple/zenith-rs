@@ -8,6 +8,7 @@ pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub user_id: i64,
     pub user_description: String,
+    #[sea_orm(unique)]
     pub user_name: String,
     pub user_password: String,
 }

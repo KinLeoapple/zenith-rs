@@ -7,6 +7,7 @@ use sea_orm::entity::prelude::*;
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub image_id: i64,
+    #[sea_orm(unique)]
     pub image_hash: String,
     pub image_pub_dt: DateTime,
 }
