@@ -7,13 +7,7 @@ use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, 
 use rand::Rng;
 use sea_orm::{DbErr, EntityTrait};
 use serde::{Deserialize, Serialize};
-
-#[derive(Debug)]
-enum JWTError {
-    UserDoesNotExist,
-    SecretDoesNotExist,
-    SomeErrorsOccurred,
-}
+use crate::utils::error::{Error, JWTError};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
@@ -74,30 +68,30 @@ pub fn generate_secret() -> String {
     secret
 }
 
-pub async fn generate_jwt(user_id: i64) -> Result<String, JWTError> {
+pub async fn generate_jwt(user_id: i64) -> Result<String, Error> {
     let claims = generate_claims(user_id).await;
     if claims.is_ok() {
         let claims = claims.unwrap();
         if claims.is_none() {
-            Err(JWTError::UserDoesNotExist)
+            Err(JWTError::UserDoesNotExist.error())
         } else {
             let header = Header::new(Algorithm::HS512);
             let secret = get_secret(user_id).await;
             if secret.is_ok() {
                 let secret = secret.unwrap();
                 if secret.is_none() {
-                    Err(JWTError::SecretDoesNotExist)
+                    Err(JWTError::SecretDoesNotExist.error())
                 } else {
                     let encoding_key = EncodingKey::from_secret(secret.unwrap().as_ref());
                     let token = encode(&header, &claims, &encoding_key).unwrap();
                     Ok(token)
                 }
             } else {
-                Err(JWTError::SomeErrorsOccurred)
+                Err(JWTError::SomeErrorsOccurred.error())
             }
         }
     } else {
-        Err(JWTError::SomeErrorsOccurred)
+        Err(JWTError::SomeErrorsOccurred.error())
     }
 }
 
@@ -127,19 +121,19 @@ pub async fn validate_claims(user_id: i64, token_data: TokenData<Claims>) -> boo
     }
 }
 
-pub async fn decode_jwt(user_id: i64, token: &str) -> Result<TokenData<Claims>, JWTError> {
+pub async fn decode_jwt(user_id: i64, token: &str) -> Result<TokenData<Claims>, Error> {
     let validation = Validation::new(Algorithm::HS512);
     let secret = get_secret(user_id).await;
     if secret.is_ok() {
         let secret = secret.unwrap();
         if secret.is_none() {
-            Err(JWTError::SecretDoesNotExist)
+            Err(JWTError::SecretDoesNotExist.error())
         } else {
             let decoding_key = DecodingKey::from_secret(secret.unwrap().as_ref());
             let token = decode::<Claims>(&token, &decoding_key, &validation).unwrap();
             Ok(token)
         }
     } else {
-        Err(JWTError::SomeErrorsOccurred)
+        Err(JWTError::SomeErrorsOccurred.error())
     }
 }

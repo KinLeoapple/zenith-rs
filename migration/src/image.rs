@@ -24,7 +24,11 @@ impl MigrationTrait for Migration {
                         .not_null()
                         .primary_key()
                     )
-                    .col(ColumnDef::new(Image::ImageHash).string().not_null())
+                    .col(ColumnDef::new(Image::ImageHash)
+                        .string()
+                        .not_null()
+                        .unique_key()
+                    )
                     .col(ColumnDef::new(Image::ImagePubDt).date_time().not_null())
                     .to_owned(),
             ).await

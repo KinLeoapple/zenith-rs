@@ -1,10 +1,12 @@
 use chrono::{Duration, Utc};
 use sea_orm::ActiveValue::Set;
 use sea_orm::{ActiveModelTrait, DatabaseConnection};
+use serde_json::json;
 use warp::{Rejection, Reply};
 use warp::http::StatusCode;
 use entity::session_storage;
 use crate::utils::id::generate_id;
+use crate::utils::result::success_with_data;
 use crate::utils::rsa_utils::{generate_key_pair, pub_to_pem, to_pem};
 
 pub async fn rsa_handler(db: DatabaseConnection) -> Result<Box<dyn Reply>, Rejection> {
@@ -18,14 +20,18 @@ pub async fn rsa_handler(db: DatabaseConnection) -> Result<Box<dyn Reply>, Rejec
             session_id: Set(id.to_owned()),
             rsa_pem: Set(Some(pem.unwrap()).to_owned()),
             user_id: Default::default(),
-            expire: Set((Utc::now() + Duration::hours(1)).naive_local().to_owned()),
+            expire: Set((Utc::now() + Duration::days(7)).naive_local().to_owned()),
         };
         let result = session.insert(&db).await;
         if result.is_ok() {
             if pub_pem.is_ok() {
+                let api_result = success_with_data(json!({
+                    "key": pub_pem.unwrap()
+                }));
+
                 Ok(Box::new(
                     warp::reply::with_header(
-                        pub_pem.unwrap(),
+                        serde_json::to_string(&api_result).unwrap(),
                         "set-cookie",
                         format!("sid={}; Path=/; HttpOnly; Max-Age={}", id.to_string(), (60 * 60 * 24 * 7)),
                     ).into_response()
