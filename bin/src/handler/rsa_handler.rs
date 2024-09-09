@@ -5,9 +5,9 @@ use serde_json::json;
 use warp::{Rejection, Reply};
 use warp::http::StatusCode;
 use entity::session_storage;
-use crate::utils::id::generate_id;
-use crate::utils::result::success_with_data;
-use crate::utils::rsa_utils::{generate_key_pair, pub_to_pem, to_pem};
+use utils::id::generate_id;
+use utils::result::success_with_data;
+use utils::rsa_utils::{generate_key_pair, pub_to_pem, to_pem};
 
 pub async fn rsa_handler(db: DatabaseConnection) -> Result<Box<dyn Reply>, Rejection> {
     let id = generate_id();

@@ -1,4 +1,3 @@
-use crate::db::connection::db;
 use chrono;
 use chrono::{Duration, Utc};
 use entity::prelude::{JwtSecret, User};
@@ -7,10 +6,12 @@ use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, 
 use rand::Rng;
 use sea_orm::{DbErr, EntityTrait};
 use serde::{Deserialize, Serialize};
-use crate::utils::error::{Error, JWTError};
+use db::connection::db;
+use crate::error::{Error, JWTError};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
+    user_id: i64,
     username: String,
     password: String,
     exp: usize, // Expiration time (as UTC timestamp)
@@ -26,6 +27,7 @@ async fn generate_claims(user_id: i64) -> Result<Option<Claims>, DbErr> {
         } else {
             let user = user.unwrap();
             let some_claims = Claims {
+                user_id,
                 username: user.user_name,
                 password: user.user_password,
                 exp: (Utc::now() + Duration::days(7)).timestamp() as usize,
@@ -95,7 +97,8 @@ pub async fn generate_jwt(user_id: i64) -> Result<String, Error> {
     }
 }
 
-pub async fn validate_claims(user_id: i64, token_data: TokenData<Claims>) -> bool {
+pub async fn verify_claims(token_data: TokenData<Claims>) -> bool {
+    let user_id = token_data.claims.user_id;
     let db = db().await.unwrap();
     let result: Result<Option<user::Model>, DbErr> = User::find_by_id(user_id).one(&db).await;
     if result.is_ok() {

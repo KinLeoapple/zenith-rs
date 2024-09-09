@@ -32,27 +32,16 @@ impl RSAError {
 }
 
 #[derive(Debug)]
-pub enum StringConversionError {
-    InvalidUTF8Sequence
-}
-
-impl StringConversionError {
-    pub fn error(&self) -> Error {
-        match self {
-            Self::InvalidUTF8Sequence => Error { message: "Invalid UTF-8 Sequence".to_string() },
-        }
-    }
-}
-
-#[derive(Debug)]
 pub enum SessionError {
     SessionNotFound,
+    SessionExpired,
 }
 
 impl SessionError {
     pub fn error(&self) -> Error {
         match self {
-            SessionError::SessionNotFound => Error { message: "Session Not Found".to_string() },
+            Self::SessionNotFound => Error { message: "Session Not Found".to_string() },
+            Self::SessionExpired => Error { message: "Session Expired".to_string() },
         }
     }
 }
@@ -78,6 +67,7 @@ impl JWTError {
 pub enum ApiResultError {
     UserDoesNotExist,
     UserPasswordDoesNotMatch,
+    InvalidToken,
 }
 
 impl ApiResultError {
@@ -86,7 +76,9 @@ impl ApiResultError {
             Self::UserDoesNotExist =>
                 ApiError { code: 2001, message: Error { message: "User Does Not Exist".to_string() } },
             Self::UserPasswordDoesNotMatch =>
-                ApiError { code: 2002, message: Error { message: "User Password Does Not Match".to_string() } }
+                ApiError { code: 2002, message: Error { message: "User Password Does Not Match".to_string() } },
+            Self::InvalidToken =>
+                ApiError { code: 2003, message: Error { message: "Invalid Token".to_string() } },
         }
     }
 }

@@ -1,5 +1,5 @@
 [workspace]
 resolver="2"
 members = [
-    "bin", "entity", "migration"
+    "bin", "db", "utils", "entity", "migration"
 ]

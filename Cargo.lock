@@ -621,6 +621,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e8566979429cf69b49a5c740c60791108e86440e8be149bbea4fe54d2c32d6e2"
 
 [[package]]
+name = "db"
+version = "0.1.0"
+dependencies = [
+ "dotenv",
+ "sea-orm",
+]
+
+[[package]]
 name = "der"
 version = "0.7.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -652,6 +660,12 @@ dependencies = [
  "crypto-common",
  "subtle",
 ]
+
+[[package]]
+name = "dotenv"
+version = "0.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "77c90badedccf4105eca100756a0b1289e191f6fcbdadd3cee1d2f614f97da8f"
 
 [[package]]
 name = "dotenvy"
@@ -2997,6 +3011,25 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 
 [[package]]
+name = "utils"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "chrono",
+ "db",
+ "entity",
+ "idgenerator",
+ "jsonwebtoken",
+ "md5",
+ "rand",
+ "rsa",
+ "sea-orm",
+ "serde",
+ "serde_json",
+ "tokio",
+]
+
+[[package]]
 name = "uuid"
 version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3346,6 +3379,7 @@ name = "zenith"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "db",
  "entity",
  "idgenerator",
  "jsonwebtoken",
@@ -3357,6 +3391,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tokio",
+ "utils",
  "warp",
 ]
 
