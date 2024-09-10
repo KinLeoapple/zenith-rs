@@ -2,7 +2,7 @@ use rsa::{Pkcs1v15Encrypt, RsaPrivateKey, RsaPublicKey};
 use rsa::pkcs1::{EncodeRsaPublicKey, LineEnding};
 use rsa::pkcs8::{DecodePrivateKey, EncodePrivateKey};
 use crate::error::{Error, RSAError};
-use crate::base64::vec_to_base64;
+use crate::hex::{to_hex, to_vec, HexString};
 
 #[derive(Debug)]
 pub struct RsaKeyPair {
@@ -20,20 +20,28 @@ pub fn generate_key_pair() -> RsaKeyPair {
         public_key: pub_key.to_owned(),
     }
 }
-pub fn encrypt(data: &[u8], pub_key: RsaPublicKey) -> Result<String, Error> {
+
+pub fn encrypt(str: &str, pub_key: RsaPublicKey) -> Result<HexString, Error> {
+    let data = str.as_bytes();
     let mut rng = rand::thread_rng();
     let result = pub_key.encrypt(&mut rng, Pkcs1v15Encrypt, &data[..]);
     if result.is_ok() {
-        Ok(vec_to_base64(result.unwrap()))
+        Ok(to_hex(result.unwrap().as_slice()))
     } else {
         Err(RSAError::RsaEncryptionError.error())
     }
 }
 
-pub fn decrypt(data: &[u8], priv_key: RsaPrivateKey) -> Result<String, Error> {
-    let result = priv_key.decrypt(Pkcs1v15Encrypt, &data);
-    if result.is_ok() {
-        Ok(vec_to_base64(result.unwrap()))
+pub fn decrypt(hex_str: HexString, priv_key: RsaPrivateKey) -> Result<HexString, Error> {
+    let data = to_vec(&hex_str.hex);
+    if data.is_ok() {
+        let data = data.unwrap();
+        let result = priv_key.decrypt(Pkcs1v15Encrypt, &data);
+        if result.is_ok() {
+            Ok(to_hex(result.unwrap().as_slice()))
+        } else {
+            Err(RSAError::RsaDecryptionError.error())
+        }
     } else {
         Err(RSAError::RsaDecryptionError.error())
     }

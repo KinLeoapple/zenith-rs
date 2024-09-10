@@ -4,12 +4,14 @@ mod handler;
 use warp::Filter;
 use db::connection::db;
 use migration::cli;
+use utils::media;
 use crate::filter::with_db::with_db;
 use crate::handler::*;
 use crate::handler::login_handler::UserRequest;
 
 #[tokio::main]
 async fn main() {
+    media::create_folder();
     cli::run_cli(migration::Migrator).await;
     let db = db().await.unwrap();
 
@@ -38,5 +40,6 @@ async fn main() {
     let routes = rsa_key
         .or(login)
         .or(token_login);
+
     warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;
 }

@@ -3018,6 +3018,7 @@ dependencies = [
  "chrono",
  "db",
  "entity",
+ "hex",
  "idgenerator",
  "jsonwebtoken",
  "md5",

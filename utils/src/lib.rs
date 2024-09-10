@@ -6,3 +6,5 @@ pub mod id;
 pub mod session;
 pub mod result;
 pub mod error;
+pub mod hex;
+pub mod media;

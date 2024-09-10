@@ -9,6 +9,7 @@ use utils::result::{failure, success_with_data};
 use utils::session::{extend_time, find_session, session_owned};
 use warp::http::StatusCode;
 use warp::{Rejection, Reply};
+use utils::hex::to_hex;
 use utils::rsa_utils::{decrypt, from_pem};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -63,10 +64,10 @@ async fn decode_password(encrypted_password: &str, session_id: i64, db: Database
             None
         } else {
             let priv_key = from_pem(&result.rsa_pem?).unwrap();
-            let decrypted_password = decrypt(encrypted_password.as_bytes(), priv_key);
+            let decrypted_password = decrypt(to_hex(encrypted_password.as_bytes()), priv_key);
             if decrypted_password.is_ok() {
                 let password = decrypted_password.unwrap();
-                Some(password)
+                Some(password.hex)
             } else {
                 None
             }
