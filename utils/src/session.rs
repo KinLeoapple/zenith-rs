@@ -3,7 +3,7 @@ use sea_orm::ActiveValue::Set;
 use sea_orm::{ActiveModelTrait, DatabaseConnection, DbErr, EntityTrait};
 use entity::prelude::SessionStorage;
 use entity::session_storage;
-use crate::error::{Error, SessionError};
+use crate::error::{Error, SessionError, ZenithError};
 
 pub async fn find_session(session_id: i64, db: DatabaseConnection) -> Result<session_storage::Model, Error> {
     let result: Result<Option<session_storage::Model>, DbErr> = SessionStorage::find_by_id(session_id).one(&db).await;

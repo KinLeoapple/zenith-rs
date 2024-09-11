@@ -1,15 +1,13 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Error {
-    pub message: String,
+pub trait ZenithError {
+    fn error(&self) -> Error;
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct ApiError {
+pub struct Error {
     pub code: i32,
-    #[serde(flatten)]
-    pub message: Error,
+    pub message: String,
 }
 
 #[derive(Debug)]
@@ -20,13 +18,13 @@ pub enum RSAError {
     PemToRsaKeyError,
 }
 
-impl RSAError {
-    pub fn error(&self) -> Error {
+impl ZenithError for RSAError {
+    fn error(&self) -> Error {
         match self {
-            Self::RsaEncryptionError => Error { message: "RSA Encryption Error".to_string() },
-            Self::RsaDecryptionError => Error { message: "RSA Decryption Error".to_string() },
-            Self::RsaKeyToPemError => Error { message: "RSA Key To Pem Error".to_string() },
-            Self::PemToRsaKeyError => Error { message: "Pem To RSA Key Error".to_string() },
+            Self::RsaEncryptionError => Error { code: -1, message: "RSA Encryption Error".to_string() },
+            Self::RsaDecryptionError => Error { code: -1, message: "RSA Decryption Error".to_string() },
+            Self::RsaKeyToPemError => Error { code: -1, message: "RSA Key To Pem Error".to_string() },
+            Self::PemToRsaKeyError => Error { code: -1, message: "Pem To RSA Key Error".to_string() },
         }
     }
 }
@@ -37,11 +35,11 @@ pub enum SessionError {
     SessionExpired,
 }
 
-impl SessionError {
-    pub fn error(&self) -> Error {
+impl ZenithError for SessionError {
+    fn error(&self) -> Error {
         match self {
-            Self::SessionNotFound => Error { message: "Session Not Found".to_string() },
-            Self::SessionExpired => Error { message: "Session Expired".to_string() },
+            Self::SessionNotFound => Error { code: -1, message: "Session Not Found".to_string() },
+            Self::SessionExpired => Error { code: -1, message: "Session Expired".to_string() },
         }
     }
 }
@@ -53,12 +51,12 @@ pub enum JWTError {
     SomeErrorsOccurred,
 }
 
-impl JWTError {
-    pub fn error(&self) -> Error {
+impl ZenithError for JWTError {
+    fn error(&self) -> Error {
         match self {
-            Self::UserDoesNotExist => Error { message: "User Does Not Exist".to_string() },
-            Self::SecretDoesNotExist => Error { message: "Secret Does Not Exist".to_string() },
-            Self::SomeErrorsOccurred => Error { message: "Some Errors".to_string() },
+            Self::UserDoesNotExist => Error { code: -1, message: "User Does Not Exist".to_string() },
+            Self::SecretDoesNotExist => Error { code: -1, message: "Secret Does Not Exist".to_string() },
+            Self::SomeErrorsOccurred => Error { code: -1, message: "Some Errors".to_string() },
         }
     }
 }
@@ -70,15 +68,15 @@ pub enum ApiResultError {
     InvalidToken,
 }
 
-impl ApiResultError {
-    pub fn error(&self) -> ApiError {
+impl ZenithError for ApiResultError {
+    fn error(&self) -> Error {
         match self {
             Self::UserDoesNotExist =>
-                ApiError { code: 2001, message: Error { message: "User Does Not Exist".to_string() } },
+                Error { code: 2001, message: "User Does Not Exist".to_string() },
             Self::UserPasswordDoesNotMatch =>
-                ApiError { code: 2002, message: Error { message: "User Password Does Not Match".to_string() } },
+                Error { code: 2002, message: "User Password Does Not Match".to_string() },
             Self::InvalidToken =>
-                ApiError { code: 2003, message: Error { message: "Invalid Token".to_string() } },
+                Error { code: 2003, message: "Invalid Token".to_string() },
         }
     }
 }

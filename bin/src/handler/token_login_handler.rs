@@ -1,7 +1,7 @@
 use sea_orm::DatabaseConnection;
 use warp::{Rejection, Reply};
 use warp::http::StatusCode;
-use utils::error::ApiResultError;
+use utils::error::{ApiResultError, ZenithError};
 use utils::jwt::{decode_jwt, generate_jwt, verify_claims};
 use utils::session::find_session;
 use crate::handler::login_handler::{login_fail, login_ok};
@@ -30,7 +30,7 @@ pub async fn token_login_handler(token: String, session_id: String, db: Database
                     }
                 } else {
                     let result_error = ApiResultError::InvalidToken.error();
-                    Ok(login_fail(result_error.code, &result_error.message.message))
+                    Ok(login_fail(result_error.code, &result_error.message))
                 }
             } else {
                 Ok(Box::new(StatusCode::INTERNAL_SERVER_ERROR))

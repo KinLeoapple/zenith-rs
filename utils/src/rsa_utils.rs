@@ -1,7 +1,7 @@
 use rsa::{Pkcs1v15Encrypt, RsaPrivateKey, RsaPublicKey};
 use rsa::pkcs1::{EncodeRsaPublicKey, LineEnding};
 use rsa::pkcs8::{DecodePrivateKey, EncodePrivateKey};
-use crate::error::{Error, RSAError};
+use crate::error::{Error, RSAError, ZenithError};
 use crate::hex::{to_hex, to_vec, HexString};
 
 #[derive(Debug)]

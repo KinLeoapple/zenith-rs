@@ -3,7 +3,7 @@ use entity::user;
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
-use utils::error::ApiResultError;
+use utils::error::{ApiResultError, ZenithError};
 use utils::jwt::generate_jwt;
 use utils::result::{failure, success_with_data};
 use utils::session::{extend_time, find_session, session_owned};
@@ -28,7 +28,7 @@ pub async fn login_handler(user_request: UserRequest, session_id: String, db: Da
         let result = result.unwrap();
         if result.is_empty() {
             let result_error = ApiResultError::UserDoesNotExist.error();
-            let api_result = failure(result_error.code, &result_error.message.message);
+            let api_result = failure(result_error.code, &result_error.message);
             Ok(Box::new(warp::reply::json(&api_result)))
         } else {
             let password = decode_password(&user_request.password, session_id.parse::<i64>().unwrap(), db.clone()).await;
@@ -47,7 +47,7 @@ pub async fn login_handler(user_request: UserRequest, session_id: String, db: Da
                     }
                 } else {
                     let result_error = ApiResultError::UserPasswordDoesNotMatch.error();
-                    Ok(login_fail(result_error.code, &result_error.message.message))
+                    Ok(login_fail(result_error.code, &result_error.message))
                 }
             }
         }

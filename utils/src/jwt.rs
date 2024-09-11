@@ -7,7 +7,7 @@ use rand::Rng;
 use sea_orm::{DbErr, EntityTrait};
 use serde::{Deserialize, Serialize};
 use db::connection::db;
-use crate::error::{Error, JWTError};
+use crate::error::{Error, JWTError, ZenithError};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
