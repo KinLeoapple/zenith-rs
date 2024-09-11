@@ -7,7 +7,7 @@ use warp::http::StatusCode;
 use entity::session_storage;
 use utils::id::generate_id;
 use utils::result::success_with_data;
-use utils::rsa_utils::{generate_key_pair, pub_to_pem, to_pem};
+use utils::rsa::{generate_key_pair, pub_to_pem, to_pem};
 
 pub async fn rsa_handler(db: DatabaseConnection) -> Result<Box<dyn Reply>, Rejection> {
     let id = generate_id();

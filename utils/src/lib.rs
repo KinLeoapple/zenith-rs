@@ -1,6 +1,6 @@
 pub mod jwt;
-pub mod md5_utils;
-pub mod rsa_utils;
+pub mod md5;
+pub mod rsa;
 pub mod base64;
 pub mod id;
 pub mod session;

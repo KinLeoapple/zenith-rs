@@ -10,7 +10,7 @@ use utils::session::{extend_time, find_session, session_owned};
 use warp::http::StatusCode;
 use warp::{Rejection, Reply};
 use utils::hex::to_hex;
-use utils::rsa_utils::{decrypt, from_pem};
+use utils::rsa::{decrypt, from_pem};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserRequest {
