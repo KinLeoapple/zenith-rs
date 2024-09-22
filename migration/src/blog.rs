@@ -14,6 +14,7 @@ pub enum Blog {
     BlogTitle,
     BlogDescription,
     BlogPubDt,
+    IsDraft
 }
 
 #[async_trait::async_trait]
@@ -34,6 +35,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Blog::BlogTitle).string().not_null())
                     .col(ColumnDef::new(Blog::BlogDescription).string().not_null())
                     .col(ColumnDef::new(Blog::BlogPubDt).date_time().not_null())
+                    .col(ColumnDef::new(Blog::IsDraft).boolean().not_null())
                     .foreign_key(
                         ForeignKey::create()
                             .from(Blog::Table, Blog::UserId)

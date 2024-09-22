@@ -8,3 +8,4 @@ pub mod result;
 pub mod error;
 pub mod hex;
 pub mod media;
+pub mod banner;

@@ -12,6 +12,7 @@ pub struct Model {
     pub blog_title: String,
     pub blog_description: String,
     pub blog_pub_dt: DateTime,
+    pub is_draft: bool,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

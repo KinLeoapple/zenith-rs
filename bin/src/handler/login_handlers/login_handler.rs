@@ -14,8 +14,8 @@ use utils::rsa::{decrypt, from_pem};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserRequest {
-    username: String,
-    password: String,
+    username: String, // The name of the user
+    password: String, // The password of the user
 }
 
 pub async fn login_handler(user_request: UserRequest, session_id: String, db: DatabaseConnection) -> Result<Box<dyn Reply>, Rejection> {

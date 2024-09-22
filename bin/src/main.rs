@@ -1,45 +1,43 @@
 mod filter;
 mod handler;
+mod routes;
 
-use warp::Filter;
+use crate::routes::login::login;
+use crate::routes::rsa_key::rsa_key;
+use crate::routes::token_login::token_login;
+use anyhow::Result;
 use db::connection::db;
-use migration::cli;
+use migration::{Migrator, MigratorTrait};
+use sea_orm::DatabaseConnection;
+use utils::banner::banner;
 use utils::media;
-use crate::filter::with_db::with_db;
-use crate::handler::*;
-use crate::handler::login_handler::UserRequest;
+use warp::Filter;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<()> {
+    run().await?;
+    Ok(())
+}
+
+async fn run() -> Result<()> {
+    println!("{}", banner());
     media::create_folder();
-    cli::run_cli(migration::Migrator).await;
+    // migration
     let db = db().await.unwrap();
+    db_migration(db.clone()).await?;
+    // run server
+    run_server(db.clone()).await;
+    Ok(())
+}
 
-    let rsa_key = warp::path!("api" / "key")
-        .and(warp::get())
-        .and(with_db(db.clone()))
-        .and_then(rsa_handler::rsa_handler);
-
-    let login = warp::path!("api" / "login")
-        .and(warp::post())
-        .and(warp::body::json())
-        .map(|request: UserRequest| {
-            request
-        })
-        .and(warp::cookie::<String>("sid"))
-        .and(with_db(db.clone()))
-        .and_then(login_handler::login_handler);
-
-    let token_login = warp::path!("api" / "login" / "token")
-        .and(warp::post())
-        .and(warp::cookie::<String>("token"))
-        .and(warp::cookie::<String>("sid"))
-        .and(with_db(db.clone()))
-        .and_then(token_login_handler::token_login_handler);
-
-    let routes = rsa_key
-        .or(login)
-        .or(token_login);
-
+async fn run_server(db: DatabaseConnection) {
+    let routes = rsa_key(db.clone())
+        .or(login(db.clone()))
+        .or(token_login(db.clone()));
     warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;
+}
+
+async fn db_migration(db: DatabaseConnection) -> Result<()> {
+    Migrator::refresh(&db).await?;
+    Ok(())
 }
