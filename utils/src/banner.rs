@@ -10,3 +10,7 @@ pub fn banner() -> String {
     let str = format!("{} {}", banner, version);
     str.to_string()
 }
+
+pub fn display_banner() {
+    println!("{}", banner());
+}

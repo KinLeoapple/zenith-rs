@@ -33,7 +33,7 @@ pub async fn rsa_handler(db: DatabaseConnection) -> Result<Box<dyn Reply>, Rejec
                     warp::reply::with_header(
                         serde_json::to_string(&api_result).unwrap(),
                         "set-cookie",
-                        format!("sid={}; Path=/; HttpOnly; Max-Age={}", id.to_string(), (60 * 60 * 24 * 7)),
+                        format!("sid={}; Path=/; HttpOnly; Max-Age={}", id.to_string(), 60 * 60 * 24 * 7),
                     ).into_response()
                 ))
             } else {

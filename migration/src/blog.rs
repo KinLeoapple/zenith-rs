@@ -1,4 +1,4 @@
-use sea_orm_migration::{prelude::*, schema::*};
+use sea_orm_migration::{prelude::*};
 use crate::user::User;
 use crate::category::Category;
 

@@ -5,7 +5,7 @@ use crate::filter::with_db::with_db;
 use crate::handler::blog_handlers::get_blogs_handler::{get_blogs_handler, BlogRequest};
 
 pub fn get_blogs(db: DatabaseConnection) -> impl Filter<Extract=(Box<(dyn Reply + 'static)>,), Error=Rejection> + Clone + Send + Sync + 'static {
-    // get blogs / drafts
+    // get blogs
     let get_blogs = warp::path!("api" / "blogs")
         .and(warp::get())
         .and(warp::body::json())

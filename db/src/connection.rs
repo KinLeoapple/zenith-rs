@@ -18,7 +18,7 @@ pub async fn db() -> Option<DatabaseConnection> {
     let connection = Database::connect(opt).await.unwrap();
     
     let ping = connection.ping().await;
-    if (ping.is_ok()) {
+    if ping.is_ok() {
         Some(connection)
     } else {
         None

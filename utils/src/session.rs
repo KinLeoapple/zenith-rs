@@ -1,9 +1,9 @@
+use crate::error::{Error, SessionError, ZenithError};
 use chrono::{Duration, Utc};
-use sea_orm::ActiveValue::Set;
-use sea_orm::{ActiveModelTrait, DatabaseConnection, DbErr, EntityTrait};
 use entity::prelude::SessionStorage;
 use entity::session_storage;
-use crate::error::{Error, SessionError, ZenithError};
+use sea_orm::ActiveValue::Set;
+use sea_orm::{ActiveModelTrait, DatabaseConnection, DbErr, EntityTrait};
 
 pub async fn find_session(session_id: i64, db: DatabaseConnection) -> Result<session_storage::Model, Error> {
     let result: Result<Option<session_storage::Model>, DbErr> = SessionStorage::find_by_id(session_id).one(&db).await;
@@ -47,5 +47,19 @@ pub async fn extend_time(session_id: i64, db: DatabaseConnection) {
         let mut result: session_storage::ActiveModel = result.unwrap().into();
         result.expire = Set((Utc::now() + Duration::days(7)).naive_local().to_owned());
         result.update(&db).await.unwrap();
+    }
+}
+
+pub async fn extract_user_id(session_id: i64, db: DatabaseConnection) -> Option<i64> {
+    let result = find_session(session_id, db.clone()).await;
+    if result.is_ok() {
+        let result = result.unwrap();
+        if result.user_id.is_none() {
+            None
+        } else {
+            Some(result.user_id.unwrap())
+        }
+    } else {
+        None
     }
 }
