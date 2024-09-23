@@ -9,4 +9,3 @@ pub mod error;
 pub mod hex;
 pub mod media;
 pub mod banner;
-pub mod server_info;

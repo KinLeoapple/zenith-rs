@@ -1,7 +1,7 @@
 mod filter;
 mod handler;
 mod routes;
-mod server_utils;
+mod common;
 
 use crate::routes::get_blogs::get_blogs;
 use crate::routes::get_drafts::get_drafts;
@@ -13,7 +13,7 @@ use db::connection::db;
 use migration::{Migrator, MigratorTrait};
 use sea_orm::DatabaseConnection;
 use utils::banner::display_banner;
-use utils::server_info::display_server_info;
+use common::server_info::display_server_info;
 use utils::media;
 use warp::Filter;
 

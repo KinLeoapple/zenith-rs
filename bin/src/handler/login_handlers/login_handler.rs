@@ -1,4 +1,4 @@
-use crate::server_utils::utils::{token_request_fail, token_request_ok};
+use crate::common::utils::{token_request_fail, token_request_ok};
 use entity::prelude::User;
 use entity::user;
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};

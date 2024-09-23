@@ -1,4 +1,4 @@
-use crate::server_utils::utils::{token_request_fail, token_request_ok, verify_session, verify_token};
+use crate::common::utils::{token_request_fail, token_request_ok, verify_session, verify_token};
 use sea_orm::DatabaseConnection;
 use serde_json::json;
 use utils::error::{ApiResultError, ZenithError};
