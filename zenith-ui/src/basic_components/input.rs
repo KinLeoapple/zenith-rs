@@ -6,25 +6,25 @@ use yew::{classes, function_component, html, use_node_ref, use_state, Callback, 
 #[derive(Properties, PartialEq)]
 pub struct InputProp {
     #[prop_or(300)]
-    pub width: i32,
+    pub width: i32, // width
     #[prop_or(45)]
-    pub height: i32,
+    pub height: i32, // height
     #[prop_or_default]
-    pub default_value: String,
+    pub default_value: String, // default value
     #[prop_or_default]
-    pub placeholder: String,
+    pub placeholder: String, // placeholder
     #[prop_or(100)]
-    max_length: i32,
+    max_length: i32, // max length
     #[prop_or_default]
-    pub input_type: String,
+    pub input_type: String, // input type
     #[prop_or(true)]
-    pub rounded: bool,
+    pub rounded: bool, // border rounded
     #[prop_or(true)]
-    pub border: bool,
+    pub border: bool, // show border
     #[prop_or(true)]
-    pub shadow: bool,
+    pub shadow: bool, // show box shadow
     #[prop_or_default]
-    pub button_text: String,
+    pub button_text: String, // text of button
 }
 
 #[function_component(Input)]
