@@ -10,6 +10,8 @@ pub struct InputProp {
     #[prop_or(45)]
     pub height: i32,
     #[prop_or_default]
+    pub default_value: String,
+    #[prop_or_default]
     pub placeholder: String,
     #[prop_or(100)]
     max_length: i32,
@@ -36,7 +38,7 @@ pub fn input(
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
 
     let input_node_ref = use_node_ref();
-    let input_value_handle = use_state(String::default);
+    let input_value_handle = use_state(|| format!("{}", props.default_value));
     let input_value = (*input_value_handle).clone();
 
     let input_type_handle = use_state(|| format!("{}", props.input_type));
