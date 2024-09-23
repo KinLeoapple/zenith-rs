@@ -24,7 +24,7 @@ pub fn button(
     let border = if props.border.clone() { Some("border-2") } else { None };
 
     html! {
-        <button class={classes!("bg-[#222630]", "relative", "inline-flex", "items-center", "justify-center", "transition-colors", "duration-100", "border-solid", "transition-colors", "outline-none", "disabled:pointer-events-none", "disabled:opacity-50", "bg-gray-800", "hover:bg-gray-700", "text-white", width, height, rounded)}>
+        <button class={classes!("relative", "inline-flex", "items-center", "justify-center", "transition-colors", "duration-100", "border-solid", "transition-colors", "outline-none", "disabled:pointer-events-none", "disabled:opacity-50", "bg-gray-800", "hover:bg-gray-700", "text-white", width, height, rounded, border)}>
             <span class="origin-left">{format!("{}", props.text)}</span>
         </button>
     }

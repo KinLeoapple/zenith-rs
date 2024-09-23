@@ -6,7 +6,7 @@ use yew::prelude::*;
 #[function_component(App)]
 fn app() -> Html {
     html! {
-        <ButtonInput/>
+        <ButtonInput input_type={"password"}/>
     }
 }
 
