@@ -1,12 +1,17 @@
 mod basic_components;
+mod theme;
 
-use crate::basic_components::input::ButtonInput;
+use gloo::console::log;
+use crate::basic_components::input::Input;
 use yew::prelude::*;
+use crate::basic_components::button::Button;
 
 #[function_component(App)]
 fn app() -> Html {
     html! {
-        <ButtonInput input_type={"password"}/>
+        <Input input_type={"password"} end_decorator={
+            html! {<Button is_decorator={true} text={"Hello"}/>}
+        }/>
     }
 }
 

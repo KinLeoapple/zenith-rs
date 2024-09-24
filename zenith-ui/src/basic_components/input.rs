@@ -1,14 +1,14 @@
-use crate::basic_components::button::Button;
+use gloo::utils::format;
 use wasm_bindgen::JsCast;
 use web_sys::{Event, EventTarget, HtmlInputElement};
 use yew::{classes, function_component, html, use_node_ref, use_state, Callback, Html, Properties};
+use crate::theme::color::{Color, Text};
+use crate::theme::size::Size;
 
 #[derive(Properties, PartialEq)]
 pub struct InputProp {
-    #[prop_or(300)]
-    pub width: i32, // width
-    #[prop_or(45)]
-    pub height: i32, // height
+    #[prop_or(Size::Md)]
+    pub size: Size,
     #[prop_or_default]
     pub default_value: String, // default value
     #[prop_or_default]
@@ -24,18 +24,28 @@ pub struct InputProp {
     #[prop_or(true)]
     pub shadow: bool, // show box shadow
     #[prop_or_default]
-    pub button_text: String, // text of button
+    pub start_decorator: Html, // start decorator
+    #[prop_or_default]
+    pub end_decorator: Html // end decorator
 }
 
 #[function_component(Input)]
 pub fn input(
     props: &InputProp,
 ) -> Html {
-    let width = format!("{}{}{}", "w-[", props.width, "px]");
-    let height = format!("{}{}{}", "h-[", props.height, "px]");
-    let rounded = if props.rounded.clone() { Some("rounded-lg") } else { None };
-    let border = if props.border.clone() { Some("border-2") } else { None };
+    let width = format!("{}{}{}", "w-[", props.size.get().0 as f64 * 3.5, "px]");
+    let height = format!("{}{}{}", "h-[", props.size.get().1, "px]");
+    let rounded = if props.rounded.clone() { Some("rounded-md") } else { None };
+    let border = if props.border.clone() { Some("border") } else { None };
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
+
+    let bg_color = format!("{}{}{}", "bg-[", Color::_900.primary(), "]");
+    let text_color = format!("{}{}{}", "text-[", Text::Primary.dark(), "]");
+    let border_color = format!("{}{}{}", "border-[", Color::_500.primary(), "]");
+    let border_focus_color = format!("{}{}{}", "focus-within:border-[", Color::_200.primary(), "]");
+
+    let input_focus_handle = use_state(|| false);
+    let input_focus = (*input_focus_handle).clone();
 
     let input_node_ref = use_node_ref();
     let input_value_handle = use_state(|| format!("{}", props.default_value));
@@ -97,12 +107,13 @@ pub fn input(
     };
 
     html! {
-        <div class={classes!("bg-[#222630]", "relative", "inline-flex", "items-center", "justify-center", width.clone(), height.clone(), "outline-none", "text-white", rounded, border, "transition-colors", "duration-100", "border-solid", "focus-within:border-[#94a3b8]", "border-[#475569]", shadow)}>
+        <div class={classes!(bg_color.clone(), "select-none", "relative", "inline-flex", "items-center", "justify-center", width.clone(), height.clone(), "outline-offset-0", text_color.clone(), rounded, border, "transition-colors", "duration-100", "border-solid", border_focus_color, border_color, shadow, "overflow-hidden")}>
+            { props.start_decorator.clone() }
             <input
                 ref={input_node_ref}
                 {oninput}
                 {onchange}
-                class={classes!("bg-[#222630]", "w-full", "h-full", "outline-none", "px-4", "pl-3", "pr-1")}
+                class={classes!(bg_color.clone(), text_color.clone(), "w-full", "h-full", "outline-none", "px-4", "pl-3", "pr-1")}
                 placeholder={format!("{}", props.placeholder)}
                 maxLength={format!("{}", props.max_length)}
                 type={input_type.clone()}
@@ -135,33 +146,7 @@ pub fn input(
                     </svg>
                 </button>
             }
-        </div>
-    }
-}
-
-#[function_component(ButtonInput)]
-pub fn button_input(
-    props: &InputProp,
-) -> Html {
-    let width = format!("{}{}{}", "w-[", props.width, "px]");
-    let height = format!("{}{}{}", "h-[", props.height, "px]");
-    let rounded = if props.rounded.clone() { Some("rounded-lg") } else { None };
-    let border = if props.border.clone() { Some("border-2") } else { None };
-    let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
-
-    html! {
-        <div class={classes!(width, height, rounded, border, "relative", "inline-flex", "items-center", "justify-center", "outline-none", "overflow-hidden", "transition-colors", "duration-100", "border-solid", "focus-within:border-[#94a3b8]", "border-[#475569]", shadow)}>
-            <Input
-                input_type={format!("{}", props.input_type)}
-                placeholder={format!("{}", props.placeholder)}
-                max_length={props.max_length}
-                rounded={false}
-                border={false}
-                shadow={false}/>
-            <Button
-                text={format!("{}", props.button_text)}
-                rounded={false}
-                border={false}/>
+            { props.end_decorator.clone() }
         </div>
     }
 }
