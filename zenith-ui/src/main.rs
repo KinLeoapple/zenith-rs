@@ -1,16 +1,17 @@
 mod basic_components;
 mod theme;
 
-use gloo::console::log;
-use crate::basic_components::input::Input;
 use yew::prelude::*;
-use crate::basic_components::button::Button;
+use crate::basic_components::divider::Divider;
+use crate::basic_components::list::List;
 
 #[function_component(App)]
 fn app() -> Html {
     html! {
-        <Input input_type={"password"} end_decorator={
-            html! {<Button is_decorator={true} text={"Hello"}/>}
+        <List list_items={vec![html!{<p>{"hello"}</p>}, html!{<p>{"hello"}</p>}]}
+            list_gap={2}
+            divider={
+            html!{<Divider inset={50}/>}
         }/>
     }
 }

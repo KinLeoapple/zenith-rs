@@ -1,3 +1,4 @@
+#[derive(PartialEq)]
 pub enum Color {
     _50,
     _100,
@@ -11,11 +12,13 @@ pub enum Color {
     _900
 }
 
+#[derive(PartialEq)]
 pub enum Common {
     White,
     Black
 }
 
+#[derive(PartialEq)]
 pub enum Background {
     Body,
     Surface,
@@ -26,6 +29,7 @@ pub enum Background {
     Tooltip,
 }
 
+#[derive(PartialEq)]
 pub enum Text {
     Primary,
     Secondary,

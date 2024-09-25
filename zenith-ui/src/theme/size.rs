@@ -9,7 +9,7 @@ impl Size {
     pub fn get(&self) -> (i32, i32) {
         match self {
             Size::Sm => {todo!()}
-            Size::Md => (100, 45),
+            Size::Md => (80, 45),
             Size::Lg => {todo!()}
         }
     }

@@ -44,9 +44,6 @@ pub fn input(
     let border_color = format!("{}{}{}", "border-[", Color::_500.primary(), "]");
     let border_focus_color = format!("{}{}{}", "focus-within:border-[", Color::_200.primary(), "]");
 
-    let input_focus_handle = use_state(|| false);
-    let input_focus = (*input_focus_handle).clone();
-
     let input_node_ref = use_node_ref();
     let input_value_handle = use_state(|| format!("{}", props.default_value));
     let input_value = (*input_value_handle).clone();
