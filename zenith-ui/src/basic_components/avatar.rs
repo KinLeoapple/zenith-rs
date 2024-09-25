@@ -38,6 +38,10 @@ pub fn avatar(
     }, "px]");
     let circle = if props.circle.clone() { Some("rounded-full") } else { None };
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
+    let margin = match props.is_decorator {
+        true => Some("mx-[3px]"),
+        false => None
+    };
 
     let bg_color = format!("{}{}{}", "bg-[", Color::_500.neutral(), "]");
     let icon_color = format!("{}{}{}", "bg-[", Color::_400.neutral(), "]");
@@ -59,7 +63,7 @@ pub fn avatar(
     };
 
     html! {
-        <div class={classes!("select-none", "relative", bg_color, text_color, width.clone(), height.clone(), circle.clone(), shadow)}>
+        <div class={classes!("select-none", "relative", bg_color, text_color, width.clone(), height.clone(), circle.clone(), shadow, margin)}>
             <div
                 {onclick}
                 class={classes!("relative", "inline-flex", "items-center", "justify-center", width.clone(), height.clone(), circle.clone(), "overflow-hidden")}>
