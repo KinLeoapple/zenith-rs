@@ -37,7 +37,7 @@ pub fn list_item(
     let bg_hover_color = format!("{}{}{}", "hover:bg-[", Color::_600.neutral(), "]");
     let text_color = format!("{}{}{}", "text-[", Common::White.common(), "]");
 
-    let onclick = on_click(props.on_click.clone());
+    let onclick = on_click(props.on_click.clone(), None);
 
     html! {
         <li

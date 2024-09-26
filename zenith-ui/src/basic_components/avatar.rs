@@ -56,7 +56,7 @@ pub fn avatar(
     let src_handle = use_state(|| format!("{}", props.src.clone()));
     let src = (*src_handle).clone();
 
-    let onclick = on_click(props.on_click.clone());
+    let onclick = on_click(props.on_click.clone(), None);
 
     html! {
         <div class={classes!("select-none", "relative", clickable, bg_color, text_color, width.clone(), height.clone(), circle.clone(), shadow, margin)}>

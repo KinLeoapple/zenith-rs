@@ -1,6 +1,7 @@
 use crate::theme::color::{Color, Common};
 use crate::theme::size::Size;
 use yew::{classes, function_component, html, Callback, Html, Properties};
+use crate::event::on_click::on_click;
 
 #[derive(Properties, PartialEq)]
 pub struct ButtonProp {
@@ -47,19 +48,7 @@ pub fn button(
     let bg_hover_color = format!("{}{}{}", "hover:bg-[", Color::_600.primary(), "]");
     let text_color = format!("{}{}{}", "text-[", Common::White.common(), "]");
 
-    let onclick = {
-        let on_click = props.on_click.clone();
-        if props.on_click.is_some() {
-            let on_click = on_click.unwrap().clone();
-            let is_loading = props.loading.clone();
-
-            Callback::from(move |_| {
-                if is_loading {
-                    on_click.emit(());
-                }
-            })
-        } else { Callback::from(|_| ()) }
-    };
+    let onclick = on_click(props.on_click.clone(), Some(!props.loading.clone()));
 
     html! {
         <button
