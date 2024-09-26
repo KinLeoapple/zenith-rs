@@ -1,4 +1,6 @@
 use yew::{classes, function_component, html, Callback, Html, Properties};
+use crate::event::on_click::on_click;
+use crate::theme::color::{Color, Common};
 use crate::theme::size::Size;
 
 #[derive(Properties, PartialEq)]
@@ -17,8 +19,8 @@ pub struct ListItemProp {
     pub start_decorator: Html, // start decorator
     #[prop_or_default]
     pub end_decorator: Html, // end decorator
-    #[prop_or_default]
-    pub on_click: Callback<()>, // on click event
+    #[prop_or(None)]
+    pub on_click: Option<Callback<()>>, // on click event
 }
 
 #[function_component(ListItem)]
@@ -29,20 +31,19 @@ pub fn list_item(
     let height = format!("{}{}{}", "h-[", props.size.get().1, "px]");
     let rounded = if props.rounded.clone() { Some("rounded-md") } else { None };
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
+    let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
 
-    let onclick = {
-        let on_click = props.on_click.clone();
+    let bg_color = format!("{}{}{}", "bg-[", Color::_700.neutral(), "]");
+    let bg_hover_color = format!("{}{}{}", "hover:bg-[", Color::_600.neutral(), "]");
+    let text_color = format!("{}{}{}", "text-[", Common::White.common(), "]");
 
-        Callback::from(move |_| {
-            on_click.emit(());
-        })
-    };
+    let onclick = on_click(props.on_click.clone());
 
     html! {
         <li
             {onclick}
             key={props.key.clone()}
-            class={classes!("flex", "items-center", "gap-2", width, height)}>
+            class={classes!(clickable, "flex", "items-center", "gap-2", "transition-colors", "duration-100", bg_color, bg_hover_color, text_color, width, height, rounded, shadow, "overflow-hidden")}>
             <div class={classes!("flex-shrink-0")}>
                 {props.start_decorator.clone()}
             </div>

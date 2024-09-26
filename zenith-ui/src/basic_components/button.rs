@@ -22,8 +22,8 @@ pub struct ButtonProp {
     pub start_decorator: Html, // start decorator
     #[prop_or_default]
     pub end_decorator: Html, // end decorator
-    #[prop_or_default]
-    pub on_click: Callback<()>, // on click event
+    #[prop_or(None)]
+    pub on_click: Option<Callback<()>>, // on click event
 }
 
 #[function_component(Button)]
@@ -41,6 +41,7 @@ pub fn button(
         false => None
     };
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
+    let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
 
     let bg_color = format!("{}{}{}", "bg-[", Color::_500.primary(), "]");
     let bg_hover_color = format!("{}{}{}", "hover:bg-[", Color::_600.primary(), "]");
@@ -48,20 +49,23 @@ pub fn button(
 
     let onclick = {
         let on_click = props.on_click.clone();
-        let is_loading = props.loading.clone();
+        if props.on_click.is_some() {
+            let on_click = on_click.unwrap().clone();
+            let is_loading = props.loading.clone();
 
-        Callback::from(move |_| {
-            if is_loading {
-                on_click.emit(());
-            }
-        })
+            Callback::from(move |_| {
+                if is_loading {
+                    on_click.emit(());
+                }
+            })
+        } else { Callback::from(|_| ()) }
     };
 
     html! {
         <button
             disabled={props.disabled.clone()}
             {onclick}
-            class={classes!("select-none", "relative", "inline-flex", "items-center", "justify-center", "shrink-0", "transition-colors", "duration-100", "transition-colors", "outline-none", "disabled:pointer-events-none", "disabled:opacity-50", "text-sm", "font-bold", bg_color, bg_hover_color, text_color, width, height, rounded, margin, shadow)}>
+            class={classes!("select-none", clickable, "relative", "inline-flex", "items-center", "justify-center", "shrink-0", "transition-colors", "duration-100", "outline-none", "disabled:pointer-events-none", "disabled:opacity-50", "text-sm", "font-bold", bg_color, bg_hover_color, text_color, width, height, rounded, margin, shadow)}>
             { props.start_decorator.clone() }
             <div
                 class={classes!("relative", "inline-flex", "items-center", "justify-center", "transition-colors", "duration-100", "transition-colors", "outline-none", "disabled:pointer-events-none", "disabled:opacity-50", "text-sm", "font-bold")}>

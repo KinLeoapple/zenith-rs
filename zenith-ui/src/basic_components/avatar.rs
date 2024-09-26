@@ -1,4 +1,5 @@
 use yew::{classes, function_component, html, use_state, Callback, Html, Properties};
+use crate::event::on_click::on_click;
 use crate::theme::color::{Color, Common};
 use crate::theme::size::Size;
 
@@ -20,8 +21,8 @@ pub struct AvatarProp {
     pub dot_indicator: bool, // show dot indicator
     #[prop_or(Color::_500.success().to_string())]
     pub indicator_color: String,
-    #[prop_or_default]
-    pub on_click: Callback<()>, // on click event
+    #[prop_or(None)]
+    pub on_click: Option<Callback<()>>, // on click event
 }
 
 #[function_component(Avatar)]
@@ -42,6 +43,7 @@ pub fn avatar(
         true => Some("mx-[3px]"),
         false => None
     };
+    let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
 
     let bg_color = format!("{}{}{}", "bg-[", Color::_500.neutral(), "]");
     let icon_color = format!("{}{}{}", "bg-[", Color::_400.neutral(), "]");
@@ -54,16 +56,10 @@ pub fn avatar(
     let src_handle = use_state(|| format!("{}", props.src.clone()));
     let src = (*src_handle).clone();
 
-    let onclick = {
-        let on_click = props.on_click.clone();
-
-        Callback::from(move |_| {
-            on_click.emit(());
-        })
-    };
+    let onclick = on_click(props.on_click.clone());
 
     html! {
-        <div class={classes!("select-none", "relative", bg_color, text_color, width.clone(), height.clone(), circle.clone(), shadow, margin)}>
+        <div class={classes!("select-none", "relative", clickable, bg_color, text_color, width.clone(), height.clone(), circle.clone(), shadow, margin)}>
             <div
                 {onclick}
                 class={classes!("relative", "inline-flex", "items-center", "justify-center", width.clone(), height.clone(), circle.clone(), "overflow-hidden")}>

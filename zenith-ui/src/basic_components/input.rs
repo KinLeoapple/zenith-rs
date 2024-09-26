@@ -1,4 +1,3 @@
-use gloo::utils::format;
 use wasm_bindgen::JsCast;
 use web_sys::{Event, EventTarget, HtmlInputElement};
 use yew::{classes, function_component, html, use_node_ref, use_state, Callback, Html, Properties};

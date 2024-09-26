@@ -1,5 +1,6 @@
 mod basic_components;
 mod theme;
+mod event;
 
 use yew::prelude::*;
 use crate::basic_components::list_item::ListItem;
@@ -7,7 +8,8 @@ use crate::basic_components::list_item::ListItem;
 #[function_component(App)]
 fn app() -> Html {
     html! {
-        <ListItem content={
+        <ListItem
+            content={
             html! {
                 <>
                     <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
