@@ -19,7 +19,7 @@ fn app() -> Html {
     html! {
         <>
             <Avatar src={"https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286"}/>
-            <Card title="This is the main card" content={"Hello"} actions={vec} image_src={
+            <Card title="This is the main card" vertical={false} content={"Hello"} actions={vec} image_src={
             "https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286"}/>
         </>
     }
