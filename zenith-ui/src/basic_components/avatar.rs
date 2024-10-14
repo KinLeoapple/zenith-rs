@@ -2,6 +2,7 @@ use yew::{classes, function_component, html, use_state, Callback, Html, Properti
 use crate::event::on_click::on_click;
 use crate::theme::color::{Color, Common};
 use crate::theme::size::Size;
+use crate::basic_components::image::Image;
 
 #[derive(Properties, PartialEq)]
 pub struct AvatarProp {
@@ -29,14 +30,16 @@ pub struct AvatarProp {
 pub fn avatar(
     props: &AvatarProp
 ) -> Html {
-    let width = format!("{}{}{}", "w-[", match props.is_decorator {
+    let width_num =  match props.is_decorator {
         true => props.size.get().1 - 10,
         false => props.size.get().1
-    }, "px]");
-    let height = format!("{}{}{}", "h-[", match props.is_decorator {
+    };
+    let height_num = match props.is_decorator {
         true => props.size.get().1 - 10,
         false => props.size.get().1
-    }, "px]");
+    };
+    let width = format!("{}{}{}", "w-[", width_num.clone(), "px]");
+    let height = format!("{}{}{}", "h-[", height_num.clone(), "px]");
     let circle = if props.circle.clone() { Some("rounded-full") } else { None };
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
     let margin = match props.is_decorator {
@@ -65,8 +68,9 @@ pub fn avatar(
                 class={classes!("relative", "inline-flex", "items-center", "justify-center", width.clone(), height.clone(), circle.clone(), "overflow-hidden")}>
                     if src.chars().count() > 0 || alt.chars().count() > 0 {
                         if src.chars().count() > 0 {
-                            <img class={classes!(width.clone(), height.clone(), circle.clone())}
-                                src={src.clone()} alt="" />
+                            <div class={classes!(circle.clone(), "overflow-hidden")}>
+                                <Image width={width_num.clone()} height={height_num.clone()} src={src.clone()}/>
+                            </div>
                         } else {
                             <span class={classes!("text-2xl", "font-bold")}>
                                 {props.alt.clone()}

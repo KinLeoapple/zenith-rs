@@ -5,7 +5,7 @@ use crate::theme::color::Text;
 pub struct ListProp {
     #[prop_or(0)]
     pub list_gap: i32, // the gap of each item
-    #[prop_or(false)]
+    #[prop_or(true)]
     pub vertical: bool, // is vertical
     #[prop_or_default]
     pub divider: Html, // divider of the list
@@ -18,8 +18,8 @@ pub fn list(
     props: &ListProp
 ) -> Html {
     let vertical = match props.vertical.clone() {
-        true => None,
-        false => Some("flex-col")
+        true => Some("flex-col"),
+        false => None
     };
     let list_gap = format!("{}{}", "gap-", props.list_gap);
 

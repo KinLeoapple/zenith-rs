@@ -13,7 +13,7 @@ pub struct InputProp {
     #[prop_or_default]
     pub placeholder: String, // placeholder
     #[prop_or(100)]
-    max_length: i32, // max length
+    pub max_length: i32, // max length
     #[prop_or_default]
     pub input_type: String, // input type
     #[prop_or(true)]
