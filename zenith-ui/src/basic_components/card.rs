@@ -65,7 +65,7 @@ pub fn card(
     html! {
         <div class={classes!("flex", vertical.clone(), width.clone(), height.clone(), bg_color.clone(), border.clone(), border_color.clone(), rounded.clone(), shadow.clone(), "overflow-hidden")}>
             <div class={classes!(padding.clone(), image_width.clone(), "shrink-0")}>
-                <Image rounded={true} src={image_src.clone()}/>
+                <Image rounded={props.vertical.clone()} src={image_src.clone()}/>
             </div>
             <div class="w-full p-5 flex flex-col items-center">
                 <h5 class={classes!("w-full", "mb-2", "text-2xl", "font-bold", "tracking-tight", text_color.clone())}>{props.title.clone()}</h5>
