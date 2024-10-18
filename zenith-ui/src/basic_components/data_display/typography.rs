@@ -45,12 +45,12 @@ pub fn typography(
     let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
     let bg_color = if props.bg_color.is_some() { Some(format!("{}{}{}", "bg-[", props.bg_color.clone().unwrap(), "]")) } else { None };
     let text_color = format!("{}{}{}", "text-[", props.text_color.clone(), "]");
-    let font_size = if props.level.clone() != Level::H1
-        || props.level.clone() != Level::H2
-        || props.level.clone() != Level::H3
-        || props.level.clone() != Level::H4 {
-        Some(format!("{}{}", "text-",
+    let font_size = format!("{}{}", "text-",
                      match props.level.clone() {
+                         Level::H1 => "7xl",
+                         Level::H2 => "6xl",
+                         Level::H3 => "5xl",
+                         Level::H4 => "4xl",
                          Level::TitleLg => "3xl",
                          Level::TitleMd => "2xl",
                          Level::TitleSm => "xl",
@@ -58,9 +58,7 @@ pub fn typography(
                          Level::BodyMd => "base",
                          Level::BodySm => "sm",
                          Level::BodyXs => "xs",
-                         _ => ""
-                     }))
-    } else { None };
+                     });
 
     let onclick = on_click(props.on_click.clone(), None);
 
@@ -71,24 +69,7 @@ pub fn typography(
             { props.start_decorator.clone() }
             <div
                 class={classes!("relative", "inline-flex", "items-center", "justify-center", "transition-colors", "duration-100", "transition-colors", "outline-none", "disabled:pointer-events-none", "disabled:opacity-50", "font-bold")}>
-                if props.level.clone() != Level::H1
-                    || props.level.clone() != Level::H2
-                    || props.level.clone() != Level::H3
-                    || props.level.clone() != Level::H4 {
-                    <div class="origin-left">{format!("{}", props.text)}</div>
-                }
-                if props.level.clone() == Level::H1 {
-                    <h1 class="origin-left">{format!("{}", props.text)}</h1>
-                }
-                if props.level.clone() == Level::H2 {
-                    <h2 class="origin-left">{format!("{}", props.text)}</h2>
-                }
-                if props.level.clone() == Level::H3 {
-                    <h3 class="origin-left">{format!("{}", props.text)}</h3>
-                }
-                if props.level.clone() == Level::H4 {
-                    <h4 class="origin-left">{format!("{}", props.text)}</h4>
-                }
+                <div class="origin-left">{format!("{}", props.text)}</div>
             </div>
             { props.end_decorator.clone() }
         </div>
