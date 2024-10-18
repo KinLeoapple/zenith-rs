@@ -1,4 +1,4 @@
-#[derive(PartialEq)]
+#[derive(PartialEq, Copy, Clone, Debug)]
 pub enum Color {
     _50,
     _100,
@@ -9,16 +9,16 @@ pub enum Color {
     _600,
     _700,
     _800,
-    _900
+    _900,
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Copy, Clone, Debug)]
 pub enum Common {
     White,
-    Black
+    Black,
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Copy, Clone, Debug)]
 pub enum Background {
     Body,
     Surface,
@@ -29,12 +29,12 @@ pub enum Background {
     Tooltip,
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Copy, Clone, Debug)]
 pub enum Text {
     Primary,
     Secondary,
     Tertiary,
-    Icon
+    Icon,
 }
 
 impl Color {

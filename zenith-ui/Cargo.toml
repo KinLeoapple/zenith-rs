@@ -11,3 +11,4 @@ wasm-bindgen-futures = "0.4.45"
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
 wasm-bindgen = "0.2.95"
 web-sys = "0.3.72"
+yew-router = { git = "https://github.com/yewstack/yew.git" }

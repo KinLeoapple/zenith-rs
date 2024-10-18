@@ -63,7 +63,7 @@ pub fn card(
     let actions = (*actions_handle).clone();
 
     html! {
-        <div class={classes!("flex", vertical.clone(), width.clone(), height.clone(), bg_color.clone(), border.clone(), border_color.clone(), rounded.clone(), shadow.clone(), "overflow-hidden")}>
+        <div class={classes!("flex", vertical, width.clone(), height.clone(), bg_color.clone(), border.clone(), border_color.clone(), rounded.clone(), shadow.clone(), "overflow-hidden")}>
             <div class={classes!(padding.clone(), image_width.clone(), "shrink-0")}>
                 <Image rounded={props.vertical.clone()} src={image_src.clone()}/>
             </div>
@@ -71,7 +71,7 @@ pub fn card(
                 <h5 class={classes!("w-full", "mb-2", "text-2xl", "font-bold", "tracking-tight", text_color.clone())}>{props.title.clone()}</h5>
                 <div class={classes!("w-full", "mb-3", content_color)}>{props.content.clone()}</div>
                 <div class={classes!("w-full", "inline-flex", "items-center", "justify-between")}>
-                    {actions.iter().map(|(html)| {
+                    {actions.iter().map(|html| {
                         html! {
                             <>
                                 {html.clone()}

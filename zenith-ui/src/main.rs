@@ -1,27 +1,49 @@
+use yew::prelude::*;
+use yew_router::prelude::*;
+use crate::components::header::Header;
+
 mod basic_components;
 mod theme;
 mod event;
+mod components;
 
-use crate::basic_components::card::Card;
-use yew::prelude::*;
-use crate::basic_components::avatar::Avatar;
-use crate::basic_components::button::Button;
-use crate::basic_components::input::Input;
-use crate::basic_components::image::Image;
+#[derive(Debug, Clone, Copy, PartialEq, Routable)]
+enum Route {
+    #[at("/")]
+    Home,
+    #[at("/blog")]
+    Blog,
+    #[at("/image")]
+    Image,
+    #[not_found]
+    #[at("/404")]
+    NotFound,
+}
+
+fn switch(routes: Route) -> Html {
+    match routes {
+        Route::Home => html! { <></> },
+        Route::Blog => html! {
+            <p>{"Blog"}</p>
+        },
+        Route::Image => html! {
+            <p>{"Image"}</p>
+        },
+        Route::NotFound => html! { <h1>{ "404" }</h1> }
+    }
+}
 
 #[function_component(App)]
 fn app() -> Html {
-    let mut vec: Vec<Html> = Vec::new();
-    vec.push(html!(<Button/>));
-    vec.push(html!(<Button/>));
-    vec.push(html!(<Button/>));
-
     html! {
-        <>
-            <Avatar src={"https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286"}/>
-            <Card title="This is the main card" vertical={false} content={"Hello"} actions={vec} image_src={
-            "https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286"}/>
-        </>
+        <BrowserRouter>
+            <div class="pl-10 pr-10 relative min-h-full">
+                <Header/>
+                <main>
+                    <Switch<Route> render={switch} />
+                </main>
+            </div>
+        </BrowserRouter>
     }
 }
 

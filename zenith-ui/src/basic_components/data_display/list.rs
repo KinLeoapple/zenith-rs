@@ -3,7 +3,7 @@ use crate::theme::color::Text;
 
 #[derive(Properties, PartialEq)]
 pub struct ListProp {
-    #[prop_or(0)]
+    #[prop_or(2)]
     pub list_gap: i32, // the gap of each item
     #[prop_or(true)]
     pub vertical: bool, // is vertical
@@ -34,7 +34,7 @@ pub fn list(
                 html! {
                     <>
                         {html.clone()}
-                        if index <= list_item.len() - 1 {
+                        if index < list_item.len() - 1 {
                             {props.divider.clone()}
                         }
                     </>
