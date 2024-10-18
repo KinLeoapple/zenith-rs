@@ -2,16 +2,41 @@ use crate::basic_components::data_display::list::List;
 use crate::basic_components::data_display::typography::Typography;
 use crate::basic_components::image::Image;
 use crate::theme::size::Size;
-use yew::{classes, function_component, html, Callback, Html};
+use yew::{classes, function_component, html, Callback, Html, Properties};
 use yew_router::prelude::*;
 use crate::Route;
 
+#[derive(Properties, PartialEq)]
+pub struct HeaderButtonProp {
+    #[prop_or_default]
+    pub text: String, // text
+    #[prop_or(Route::Home)]
+    pub route: Route // route
+}
+
+#[function_component(HeaderButton)]
+fn header_button(
+    props: &HeaderButtonProp
+) -> Html {
+    let navigator = use_navigator().unwrap();
+    let onclick = {
+        let route = props.route.clone();
+
+        Callback::from(move |_| navigator.replace(&route))
+    };
+
+    html! {
+        <Typography text={format!("{}", props.text)} on_click={onclick} />
+    }
+}
+
 #[function_component(Header)]
 pub fn header() -> Html {
-    let mut list_items: Vec<Html> = Vec::new();
-    list_items.push(html!(<Typography text={"Home"}/>));
-    list_items.push(html!(<Typography text={"Blog"}/>));
-    list_items.push(html!(<Typography text={"Image"}/>));
+    let mut list_items: Vec<Html> = vec![
+        html!(<HeaderButton text={"Home"} route={Route::Home}/>),
+        html!(<HeaderButton text={"Blog"} route={Route::Blog}/>),
+        html!(<HeaderButton text={"Image"} route={Route::Image}/>)
+    ];
 
     let navigator = use_navigator().unwrap();
     let onclick = Callback::from(move |_| navigator.replace(&Route::Home));
