@@ -8,7 +8,7 @@ use yew::{classes, function_component, html, use_context, use_node_ref, use_stat
 #[derive(Properties, PartialEq)]
 pub struct InputProp {
     #[prop_or(Size::Md)]
-    pub size: Size,
+    pub size: Size, // size
     #[prop_or_default]
     pub default_value: String, // default value
     #[prop_or_default]
