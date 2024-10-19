@@ -1,11 +1,15 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 use crate::components::header::Header;
+use crate::components::theme_ctx::ThemeProvider;
+use crate::theme::size::Size;
+use crate::views::home_view::HomeView;
 
 mod basic_components;
 mod theme;
 mod event;
 mod components;
+mod views;
 
 #[derive(Debug, Clone, Copy, PartialEq, Routable)]
 enum Route {
@@ -22,7 +26,7 @@ enum Route {
 
 fn switch(routes: Route) -> Html {
     match routes {
-        Route::Home => html! { <></> },
+        Route::Home => html! { <HomeView/> },
         Route::Blog => html! {
             <p>{"Blog"}</p>
         },
@@ -35,14 +39,21 @@ fn switch(routes: Route) -> Html {
 
 #[function_component(App)]
 fn app() -> Html {
+    let header_height_num = Size::Md.get().1 as f64 * 1.5;
+    let header_height = format!("{}{}{}", "h-[", header_height_num, "px]");
+
     html! {
         <BrowserRouter>
-            <div class="pl-10 pr-10 relative min-h-full">
-                <Header/>
-                <main>
-                    <Switch<Route> render={switch} />
-                </main>
-            </div>
+            <ThemeProvider>
+                <div class="pl-10 pr-10 relative min-h-full">
+                    <header class={classes!(header_height)}>
+                        <Header/>
+                    </header>
+                    <main>
+                        <Switch<Route> render={switch} />
+                    </main>
+                </div>
+            </ThemeProvider>
         </BrowserRouter>
     }
 }

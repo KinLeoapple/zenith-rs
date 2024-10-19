@@ -28,14 +28,11 @@ pub fn icon(
     let rounded = if props.rounded.clone() { Some("rounded-md") } else { None };
     let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
 
-    let svg_handle = use_state(|| props.svg.clone());
-    let svg = (*svg_handle).clone();
-
     let onclick = on_click(props.on_click.clone(), None);
 
     html! {
         <div {onclick} class={classes!(width, height, rounded, clickable, "overflow-hidden")}>
-            {svg.clone()}
+            {props.svg.clone()}
         </div>
     }
 }

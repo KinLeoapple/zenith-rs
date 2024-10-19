@@ -1,4 +1,10 @@
 #[derive(PartialEq, Copy, Clone, Debug)]
+pub enum Theme {
+    Light,
+    Dark,
+}
+
+#[derive(PartialEq, Copy, Clone, Debug)]
 pub enum Color {
     _50,
     _100,
@@ -35,6 +41,15 @@ pub enum Text {
     Secondary,
     Tertiary,
     Icon,
+}
+
+impl Theme {
+    pub fn theme(&self) -> &str {
+        match self {
+            Theme::Light => "light",
+            Theme::Dark => "dark"
+        }
+    }
 }
 
 impl Color {
