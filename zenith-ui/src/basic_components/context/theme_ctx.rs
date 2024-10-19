@@ -13,7 +13,7 @@ impl Reducible for Theme {
 
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
         let storage = window().unwrap().local_storage().unwrap().unwrap();
-        storage.set_item("theme", &*self.inner).unwrap();
+        storage.set_item("theme", &*action.clone()).unwrap();
         Theme { inner: action }.into()
     }
 }
@@ -34,12 +34,12 @@ pub fn ThemeProvider(props: &ThemeProviderProps) -> Html {
         .unwrap_or_default()
         .unwrap_or(color::Theme::Dark.theme().to_string());
 
-    let msg = use_reducer(|| Theme {
+    let theme = use_reducer(|| Theme {
         inner: initial_theme,
     });
 
     html! {
-        <ContextProvider<ThemeContext> context={msg}>
+        <ContextProvider<ThemeContext> context={theme}>
             {props.children.clone()}
         </ContextProvider<ThemeContext>>
     }

@@ -1,5 +1,5 @@
-use yew::{function_component, html, Html};
 use crate::basic_components::data_display::typography::{Level, Typography};
+use yew::{function_component, html, Html};
 
 #[function_component(CTA)]
 pub fn cta() -> Html {

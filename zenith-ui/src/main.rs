@@ -1,7 +1,8 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
-use crate::components::header::Header;
-use crate::components::theme_ctx::ThemeProvider;
+use crate::components::header::header::Header;
+use basic_components::context::theme_ctx::ThemeProvider;
+use crate::components::container::Container;
 use crate::theme::size::Size;
 use crate::views::home_view::HomeView;
 
@@ -45,14 +46,16 @@ fn app() -> Html {
     html! {
         <BrowserRouter>
             <ThemeProvider>
-                <div class="pl-10 pr-10 relative min-h-full">
-                    <header class={classes!(header_height)}>
-                        <Header/>
-                    </header>
-                    <main>
-                        <Switch<Route> render={switch} />
-                    </main>
-                </div>
+                <Container>
+                    <div class="pl-10 pr-10 relative min-h-full">
+                        <header class={classes!(header_height)}>
+                            <Header/>
+                        </header>
+                        <main>
+                            <Switch<Route> render={switch} />
+                        </main>
+                    </div>
+                </Container>
             </ThemeProvider>
         </BrowserRouter>
     }

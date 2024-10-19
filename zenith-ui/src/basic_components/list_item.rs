@@ -1,7 +1,8 @@
-use yew::{classes, function_component, html, Callback, Html, Properties};
+use crate::basic_components::context::theme_ctx::ThemeContext;
 use crate::event::on_click::on_click;
-use crate::theme::color::{Color, Common};
 use crate::theme::size::Size;
+use crate::theme::default;
+use yew::{classes, function_component, html, use_context, Callback, Html, Properties};
 
 #[derive(Properties, PartialEq)]
 pub struct ListItemProp {
@@ -27,15 +28,17 @@ pub struct ListItemProp {
 pub fn list_item(
     props: &ListItemProp
 ) -> Html {
+    let theme_ctx = use_context::<ThemeContext>().unwrap();
+
     let width = format!("{}{}{}", "w-[", props.size.get().0 as f64 * 3.5, "px]");
     let height = format!("{}{}{}", "h-[", props.size.get().1, "px]");
     let rounded = if props.rounded.clone() { Some("rounded-md") } else { None };
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
     let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
 
-    let bg_color = format!("{}{}{}", "bg-[", Color::_700.neutral(), "]");
-    let bg_hover_color = format!("{}{}{}", "hover:bg-[", Color::_600.neutral(), "]");
-    let text_color = format!("{}{}{}", "text-[", Common::White.common(), "]");
+    let bg_color = format!("{}{}{}", "bg-[", default::Default::Theme.list_items_bg_color(theme_ctx.inner.as_str()), "]");
+    let bg_hover_color = format!("{}{}{}", "hover:bg-[", default::Default::Theme.list_items_hover_bg_color(theme_ctx.inner.as_str()), "]");
+    let text_color = format!("{}{}{}", "text-[", default::Default::Theme.text_color(theme_ctx.inner.as_str()), "]");
 
     let onclick = on_click(props.on_click.clone(), None);
 

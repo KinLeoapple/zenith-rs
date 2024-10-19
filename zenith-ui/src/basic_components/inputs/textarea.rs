@@ -1,8 +1,10 @@
+use crate::basic_components::context::theme_ctx::ThemeContext;
+use crate::theme::color::{Color, Theme};
+use crate::theme::size::Size;
+use crate::theme::default;
 use wasm_bindgen::JsCast;
 use web_sys::{Event, EventTarget, HtmlInputElement};
-use crate::theme::size::Size;
-use yew::{classes, function_component, html, use_node_ref, use_state, Callback, Html, Properties};
-use crate::theme::color::{Color, Text};
+use yew::{classes, function_component, html, use_context, use_node_ref, use_state, Callback, Html, Properties};
 
 #[derive(Properties, PartialEq)]
 pub struct TextareaProp {
@@ -30,15 +32,17 @@ pub struct TextareaProp {
 pub fn textarea(
     props: &TextareaProp,
 ) -> Html {
+    let theme_ctx = use_context::<ThemeContext>().unwrap();
+
     let width = format!("{}{}{}", "w-[", props.size.get().0 as f64 * 3.5, "px]");
     let rounded = if props.rounded.clone() { Some("rounded-md") } else { None };
     let border = if props.border.clone() { Some("border") } else { None };
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
 
-    let bg_color = format!("{}{}{}", "bg-[", Color::_900.primary(), "]");
-    let text_color = format!("{}{}{}", "text-[", Text::Primary.dark(), "]");
-    let border_color = format!("{}{}{}", "border-[", Color::_500.primary(), "]");
-    let border_focus_color = format!("{}{}{}", "focus-within:border-[", Color::_200.primary(), "]");
+    let bg_color = format!("{}{}{}", "bg-[", default::Default::Theme.textarea_bg_color(theme_ctx.inner.as_str()), "]");
+    let text_color = format!("{}{}{}", "text-[", default::Default::Theme.text_color(theme_ctx.inner.as_str()), "]");
+    let border_color = format!("{}{}{}", "border-[", default::Default::Theme.textarea_border_color(theme_ctx.inner.as_str()), "]");
+    let border_focus_color = format!("{}{}{}", "focus-within:border-[", default::Default::Theme.textarea_border_focus_color(theme_ctx.inner.as_str()), "]");
 
     let textarea_node_ref = use_node_ref();
     let textarea_value_handle = use_state(|| format!("{}", props.default_value));

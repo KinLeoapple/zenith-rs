@@ -1,8 +1,10 @@
-use yew::{classes, function_component, html, use_state, Callback, Html, Properties};
-use crate::event::on_click::on_click;
-use crate::theme::color::{Color, Common};
-use crate::theme::size::Size;
+use crate::basic_components::context::theme_ctx::ThemeContext;
 use crate::basic_components::image::Image;
+use crate::event::on_click::on_click;
+use crate::theme::color::Color;
+use crate::theme::default;
+use crate::theme::size::Size;
+use yew::{classes, function_component, html, use_context, use_state, Callback, Html, Properties};
 
 #[derive(Properties, PartialEq)]
 pub struct AvatarProp {
@@ -30,6 +32,8 @@ pub struct AvatarProp {
 pub fn avatar(
     props: &AvatarProp
 ) -> Html {
+    let theme_ctx = use_context::<ThemeContext>().unwrap();
+
     let width_num =  match props.is_decorator {
         true => props.size.get().1 - 10,
         false => props.size.get().1
@@ -48,9 +52,9 @@ pub fn avatar(
     };
     let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
 
-    let bg_color = format!("{}{}{}", "bg-[", Color::_500.neutral(), "]");
-    let icon_color = format!("{}{}{}", "bg-[", Color::_400.neutral(), "]");
-    let text_color = format!("{}{}{}", "text-[", Common::White.common(), "]");
+    let bg_color = format!("{}{}{}", "bg-[", default::Default::Theme.avatar_bg_color(theme_ctx.inner.as_str()), "]");
+    let icon_color = format!("{}{}{}", "bg-[", default::Default::Theme.avatar_icon_color(theme_ctx.inner.as_str()), "]");
+    let text_color = format!("{}{}{}", "text-[", default::Default::Theme.text_color(theme_ctx.inner.as_str()), "]");
     let indicator_color = format!("{}{}{}", "text-[", props.indicator_color.clone(), "]");
 
     let alt_handle = use_state(|| format!("{}", props.alt.clone()));

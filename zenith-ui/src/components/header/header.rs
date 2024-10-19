@@ -5,7 +5,7 @@ use crate::theme::size::Size;
 use yew::{classes, function_component, html, use_context, use_state, Callback, Html, Properties};
 use yew_router::prelude::*;
 use crate::basic_components::icon::Icon;
-use crate::components::theme_ctx::ThemeContext;
+use crate::basic_components::context::theme_ctx::ThemeContext;
 use crate::Route;
 use crate::theme::color::Theme;
 
@@ -61,11 +61,11 @@ fn theme_icon() -> Html {
 
         Callback::from(move |_| {
             if theme_ctx.inner == Theme::Light.theme() {
-                svg_handle.set(svg_list.get(1).unwrap().clone());
                 theme_ctx.dispatch(Theme::Dark.theme().to_string());
-            } else if theme_ctx.inner == Theme::Dark.theme() {
-                svg_handle.set(svg_list.get(0).unwrap().clone());
+                svg_handle.set(svg_list.get(1).unwrap().clone());
+            } else {
                 theme_ctx.dispatch(Theme::Light.theme().to_string());
+                svg_handle.set(svg_list.get(0).unwrap().clone());
             }
         })
     };

@@ -1,9 +1,10 @@
-use crate::theme::color::{Color, Common};
-use crate::theme::size::Size;
-use yew::{classes, function_component, html, Callback, Html, Properties};
+use crate::basic_components::context::theme_ctx::ThemeContext;
 use crate::basic_components::data_display::typography::Typography;
 use crate::basic_components::icon::Icon;
 use crate::event::on_click::on_click;
+use crate::theme::size::Size;
+use crate::theme::default;
+use yew::{classes, function_component, html, use_context, Callback, Html, Properties};
 
 #[derive(Properties, PartialEq)]
 pub struct ButtonProp {
@@ -35,12 +36,14 @@ pub struct ButtonProp {
 pub fn button(
     props: &ButtonProp
 ) -> Html {
-    let width = format!("{}{}{}", "w-[", props.size.get().0, "px]");
+    let theme_ctx = use_context::<ThemeContext>().unwrap();
+
+    let width = format!("{}{}{}", "min-w-[", props.size.get().0 as f64 * 1.2, "px]");
     let height = format!("{}{}{}", "h-[", match props.is_decorator {
         true => props.size.get().1 - 10,
         false => props.size.get().1
     }, "px]");
-    let rounded = if props.rounded.clone() { Some("rounded-md") } else { None };
+    let rounded = if props.rounded.clone() { Some("rounded-full") } else { None };
     let margin = match props.is_decorator {
         true => Some("mx-[3px]"),
         false => None
@@ -48,9 +51,9 @@ pub fn button(
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
     let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
 
-    let bg_color = format!("{}{}{}", "bg-[", Color::_500.primary(), "]");
-    let bg_hover_color = format!("{}{}{}", "hover:bg-[", Color::_600.primary(), "]");
-    let text_color = format!("{}{}{}", "text-[", Common::White.common(), "]");
+    let bg_color = format!("{}{}{}", "bg-[", default::Default::Theme.button_bg_color(theme_ctx.inner.as_str()), "]");
+    let bg_hover_color = format!("{}{}{}", "hover:bg-[", default::Default::Theme.button_hover_bg_color(theme_ctx.inner.as_str()), "]");
+    let text_color = format!("{}{}{}", "text-[", default::Default::Theme.text_color(theme_ctx.inner.as_str()), "]");
 
     let onclick = on_click(props.on_click.clone(), Some(!props.loading.clone()));
 
@@ -58,8 +61,10 @@ pub fn button(
         <button
             disabled={props.disabled.clone()}
             {onclick}
-            class={classes!("select-none", clickable, "relative", "inline-flex", "items-center", "justify-center", "shrink-0", "transition-colors", "duration-100", "outline-none", "disabled:pointer-events-none", "disabled:opacity-50", "font-bold", bg_color, bg_hover_color, text_color, width, height, rounded, margin, shadow)}>
-            { props.start_decorator.clone() }
+            class={classes!("pl-5", "pr-5", "select-none", "w-auto", clickable, "relative", "inline-flex", "items-center", "justify-center", "shrink-0", "transition-colors", "duration-100", "outline-none", "disabled:pointer-events-none", "disabled:opacity-50", "font-bold", bg_color, bg_hover_color, text_color, width, height, rounded, margin, shadow)}>
+            <div class={classes!("select-none", clickable, "relative", "inline-flex", "items-center", "justify-center", "shrink-0")}>
+                { props.start_decorator.clone() }
+            </div>
             <div
                 class={classes!("relative", "inline-flex", "items-center", "justify-center", "transition-colors", "duration-100", "transition-colors", "outline-none", "disabled:pointer-events-none", "disabled:opacity-50", "font-bold")}>
                 if props.loading.clone() {
@@ -78,7 +83,9 @@ pub fn button(
                     }
                 }
             </div>
-            { props.end_decorator.clone() }
+            <div class={classes!("select-none", clickable, "relative", "inline-flex", "items-center", "justify-center", "shrink-0")}>
+                { props.end_decorator.clone() }
+            </div>
         </button>
     }
 }
