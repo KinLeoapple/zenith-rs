@@ -1,6 +1,6 @@
 use crate::basic_components::context::theme_ctx::ThemeContext;
 use crate::event::on_click::on_click;
-use crate::theme::default;
+use crate::theme::theme_value::ThemeValue;
 use yew::{classes, function_component, html, use_context, Callback, Html, Properties};
 
 #[derive(PartialEq, Clone, Debug)]
@@ -48,7 +48,7 @@ pub fn typography(
     let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
     let bg_color = if props.bg_color.is_some() { Some(format!("{}{}{}", "bg-[", props.bg_color.clone().unwrap(), "]")) } else { None };
     let text_color = format!("{}{}{}", "text-[", if props.text_color.clone().chars().count() <= 0 {
-        default::Default::Theme.text_color(theme_ctx.inner.as_str())
+        ThemeValue::Theme.text_color(theme_ctx.inner.as_str())
     } else {
         props.text_color.as_ref()
     }, "]");

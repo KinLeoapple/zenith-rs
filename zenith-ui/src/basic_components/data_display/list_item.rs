@@ -1,7 +1,7 @@
 use crate::basic_components::context::theme_ctx::ThemeContext;
 use crate::event::on_click::on_click;
 use crate::theme::size::Size;
-use crate::theme::default;
+use crate::theme::theme_value::ThemeValue;
 use yew::{classes, function_component, html, use_context, Callback, Html, Properties};
 
 #[derive(Properties, PartialEq)]
@@ -36,9 +36,9 @@ pub fn list_item(
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
     let clickable = if props.on_click.is_some() { Some("cursor-pointer") } else { None };
 
-    let bg_color = format!("{}{}{}", "bg-[", default::Default::Theme.list_items_bg_color(theme_ctx.inner.as_str()), "]");
-    let bg_hover_color = format!("{}{}{}", "hover:bg-[", default::Default::Theme.list_items_hover_bg_color(theme_ctx.inner.as_str()), "]");
-    let text_color = format!("{}{}{}", "text-[", default::Default::Theme.text_color(theme_ctx.inner.as_str()), "]");
+    let bg_color = format!("{}{}{}", "bg-[", ThemeValue::Theme.list_items_bg_color(theme_ctx.inner.as_str()), "]");
+    let bg_hover_color = format!("{}{}{}", "hover:bg-[", ThemeValue::Theme.list_items_hover_bg_color(theme_ctx.inner.as_str()), "]");
+    let text_color = format!("{}{}{}", "text-[", ThemeValue::Theme.text_color(theme_ctx.inner.as_str()), "]");
 
     let onclick = on_click(props.on_click.clone(), None);
 

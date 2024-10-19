@@ -1,8 +1,7 @@
-use yew::{classes, function_component, html, use_context, use_state, Callback, Html, Properties};
 use crate::basic_components::context::theme_ctx::ThemeContext;
 use crate::event::on_click::on_click;
-use crate::theme::{color, default};
-use crate::theme::color::{Common, Theme};
+use crate::theme::theme_value::ThemeValue;
+use yew::{classes, function_component, html, use_context, Callback, Html, Properties};
 
 #[derive(Properties, PartialEq)]
 pub struct IconProp {
@@ -34,7 +33,7 @@ pub fn icon(
     } else { format!("{}{}{}", "h-[", props.height, "px]") };
     let rounded = if props.rounded.clone() { Some("rounded-md") } else { None };
     let color = format!("{}{}{}", "text-[", if props.color.clone().chars().count() <= 0 {
-        default::Default::Theme.text_color(theme_ctx.inner.as_str())
+        ThemeValue::Theme.text_color(theme_ctx.inner.as_str())
     } else {
         props.color.as_ref()
     }, "]");

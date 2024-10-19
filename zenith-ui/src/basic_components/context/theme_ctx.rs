@@ -21,13 +21,13 @@ impl Reducible for Theme {
 pub type ThemeContext = UseReducerHandle<Theme>;
 
 #[derive(Properties, Debug, PartialEq)]
-pub struct ThemeProviderProps {
+pub struct ThemeProviderProp {
     #[prop_or_default]
     pub children: Html,
 }
 
-#[function_component]
-pub fn ThemeProvider(props: &ThemeProviderProps) -> Html {
+#[function_component(ThemeProvider)]
+pub fn theme_provider(props: &ThemeProviderProp) -> Html {
     let storage = window().unwrap().local_storage().unwrap().unwrap();
     let initial_theme = storage
         .get_item("theme")

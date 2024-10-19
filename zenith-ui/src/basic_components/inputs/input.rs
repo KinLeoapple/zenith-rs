@@ -1,6 +1,6 @@
 use crate::basic_components::context::theme_ctx::ThemeContext;
-use crate::theme::default;
 use crate::theme::size::Size;
+use crate::theme::theme_value::ThemeValue;
 use wasm_bindgen::JsCast;
 use web_sys::{Event, EventTarget, HtmlInputElement};
 use yew::{classes, function_component, html, use_context, use_node_ref, use_state, Callback, Html, Properties};
@@ -41,10 +41,10 @@ pub fn input(
     let border = if props.border.clone() { Some("border") } else { None };
     let shadow = if props.shadow.clone() { Some("shadow-md") } else { None };
 
-    let bg_color = format!("{}{}{}", "bg-[", default::Default::Theme.input_bg_color(theme_ctx.inner.as_str()), "]");
-    let text_color = format!("{}{}{}", "text-[", default::Default::Theme.text_color(theme_ctx.inner.as_str()), "]");
-    let border_color = format!("{}{}{}", "border-[", default::Default::Theme.input_border_color(theme_ctx.inner.as_str()), "]");
-    let border_focus_color = format!("{}{}{}", "focus-within:border-[", default::Default::Theme.input_border_focus_color(theme_ctx.inner.as_str()), "]");
+    let bg_color = format!("{}{}{}", "bg-[", ThemeValue::Theme.input_bg_color(theme_ctx.inner.as_str()), "]");
+    let text_color = format!("{}{}{}", "text-[", ThemeValue::Theme.text_color(theme_ctx.inner.as_str()), "]");
+    let border_color = format!("{}{}{}", "border-[", ThemeValue::Theme.input_border_color(theme_ctx.inner.as_str()), "]");
+    let border_focus_color = format!("{}{}{}", "focus-within:border-[", ThemeValue::Theme.input_border_focus_color(theme_ctx.inner.as_str()), "]");
 
     let input_node_ref = use_node_ref();
     let input_value_handle = use_state(|| format!("{}", props.default_value));

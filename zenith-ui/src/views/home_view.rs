@@ -1,16 +1,21 @@
-use yew::{classes, function_component, html, Html};
 use crate::basic_components::icon::Icon;
 use crate::basic_components::inputs::button::Button;
 use crate::components::home::cta::CTA;
+use yew::{classes, function_component, html, Callback, Html};
+use yew_router::hooks::use_navigator;
+use crate::Route;
 
 #[function_component(HomeView)]
 pub fn home_view() -> Html {
+    let navigator = use_navigator().unwrap();
+    let onclick = Callback::from(move |_| navigator.replace(&Route::SignIn));
+
     html! {
         <div class={classes!("pt-28")}>
             <div class={classes!("select-none", "pb-5")}>
                 <CTA/>
             </div>
-            <Button text={"Sign up"} end_decorator={
+            <Button on_click={onclick} text={"Sign up"} end_decorator={
                 html!(
                     <Icon svg={
                         html!(

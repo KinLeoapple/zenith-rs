@@ -1,11 +1,11 @@
 use crate::theme::color::{Color, Text, Theme};
 
 #[derive(PartialEq, Copy, Clone, Debug)]
-pub enum Default {
+pub enum ThemeValue {
     Theme
 }
 
-impl Default {
+impl ThemeValue {
     pub fn bg(&self, theme: &str) -> &str {
         if theme == Theme::Dark.theme() {
             "bg-gray-900"

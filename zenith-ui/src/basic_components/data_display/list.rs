@@ -1,7 +1,6 @@
-use yew::{classes, function_component, html, use_context, use_state, Html, Properties};
 use crate::basic_components::context::theme_ctx::ThemeContext;
-use crate::theme::color::Text;
-use crate::theme::default;
+use crate::theme::theme_value::ThemeValue;
+use yew::{classes, function_component, html, use_context, use_state, Html, Properties};
 
 #[derive(Properties, PartialEq)]
 pub struct ListProp {
@@ -27,7 +26,7 @@ pub fn list(
     };
     let list_gap = format!("{}{}", "gap-", props.list_gap);
 
-    let text_color = format!("{}{}{}", "text-[", default::Default::Theme.text_color(theme_ctx.inner.as_str()), "]");
+    let text_color = format!("{}{}{}", "text-[", ThemeValue::Theme.text_color(theme_ctx.inner.as_str()), "]");
 
     let list_items_handle = use_state(|| props.list_items.clone());
     let list_item = (*list_items_handle).clone();
