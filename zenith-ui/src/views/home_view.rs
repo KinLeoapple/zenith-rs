@@ -1,9 +1,9 @@
 use crate::basic_components::icon::Icon;
 use crate::basic_components::inputs::button::Button;
 use crate::components::home::cta::CTA;
+use crate::Route;
 use yew::{classes, function_component, html, Callback, Html};
 use yew_router::hooks::use_navigator;
-use crate::Route;
 
 #[function_component(HomeView)]
 pub fn home_view() -> Html {
